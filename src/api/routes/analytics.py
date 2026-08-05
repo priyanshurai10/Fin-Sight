@@ -9,14 +9,18 @@ from src.services.forecasting import generate_financial_forecast
 
 router = APIRouter(prefix="/analytics", tags=["Financial Analytics & Intelligence"])
 
+def _get_dataframe():
+    if os.path.exists(settings.PROCESSED_DATA_PATH):
+        return pd.read_csv(settings.PROCESSED_DATA_PATH)
+    elif os.path.exists(settings.RAW_DATA_PATH):
+        return pd.read_csv(settings.RAW_DATA_PATH)
+    else:
+        from src.data.generate_synthetic_data import generate_synthetic_transactions
+        return generate_synthetic_transactions(num_records=15000)
+
 @router.get("/kpis")
 def get_kpi_summary(continent: Optional[str] = Query(None)):
-    if not os.path.exists(settings.PROCESSED_DATA_PATH):
-        from src.services.etl import ETLPipeline
-        etl = ETLPipeline()
-        df = etl.run()
-    else:
-        df = pd.read_csv(settings.PROCESSED_DATA_PATH)
+    df = _get_dataframe()
         
     df_filtered = df.copy()
     if continent and continent != "All":
@@ -96,7 +100,8 @@ def get_kpi_summary(continent: Optional[str] = Query(None)):
 
 @router.get("/segmentation")
 def get_customer_segmentation():
-    rfm_df = perform_customer_rfm_segmentation()
+    df = _get_dataframe()
+    rfm_df = perform_customer_rfm_segmentation(df)
     segment_counts = {str(k): int(v) for k, v in rfm_df['segment_label'].value_counts().to_dict().items()}
     summary = rfm_df.groupby('segment_label').agg({
         'monetary_val': 'mean',
@@ -118,17 +123,12 @@ def get_customer_segmentation():
 
 @router.get("/forecasting")
 def get_financial_forecast(days: int = 30):
-    return generate_financial_forecast(days_ahead=days)
+    df = _get_dataframe()
+    return generate_financial_forecast(df, days_ahead=days)
 
 @router.get("/incidents")
 def get_fraud_incidents():
-    if not os.path.exists(settings.PROCESSED_DATA_PATH):
-        from src.services.etl import ETLPipeline
-        etl = ETLPipeline()
-        df = etl.run()
-    else:
-        df = pd.read_csv(settings.PROCESSED_DATA_PATH)
-        
+    df = _get_dataframe()
     fraud_df = df[df['is_fraud_actual'] == 1].copy()
     fraud_df = fraud_df.sort_values(by='amount', ascending=False).head(15)
     

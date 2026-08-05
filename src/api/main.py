@@ -6,20 +6,22 @@ from fastapi.responses import FileResponse, RedirectResponse
 
 from src.core.config import settings
 from src.db.database import engine, Base
-from src.services.etl import ETLPipeline
 from src.api.routes import auth, transactions, analytics, ml, reports
 
-# Ensure DB tables exist
-Base.metadata.create_all(bind=engine)
-
-# Ingest data on startup if database is empty
-etl = ETLPipeline()
-etl.run()
+# Safely initialize database on startup (skip disk write operations on Vercel's read-only filesystem)
+try:
+    Base.metadata.create_all(bind=engine)
+    if not os.getenv("VERCEL"):
+        from src.services.etl import ETLPipeline
+        etl = ETLPipeline()
+        etl.run()
+except Exception as err:
+    print(f"Serverless startup notice: {err}")
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Enterprise Financial Intelligence & Fraud Analytics Platform API. Powered by XGBoost, FastAPI, PostgreSQL, and OpenPyXL.",
+    description="Enterprise Financial Intelligence & Fraud Analytics Platform API. Powered by Scikit-Learn, FastAPI, PostgreSQL, and OpenPyXL.",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -34,7 +36,6 @@ app.add_middleware(
 )
 
 # Register API Router
-api_v1 = FastAPI()
 app.include_router(auth.router, prefix=settings.API_V1_STR)
 app.include_router(transactions.router, prefix=settings.API_V1_STR)
 app.include_router(analytics.router, prefix=settings.API_V1_STR)

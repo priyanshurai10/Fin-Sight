@@ -5,13 +5,15 @@ from datetime import datetime, timedelta
 from typing import Dict, Any, List
 from src.core.config import settings
 
-def generate_financial_forecast(days_ahead: int = 30) -> Dict[str, Any]:
-    if not os.path.exists(settings.PROCESSED_DATA_PATH):
-        from src.services.etl import ETLPipeline
-        etl = ETLPipeline()
-        df = etl.run()
-    else:
-        df = pd.read_csv(settings.PROCESSED_DATA_PATH)
+def generate_financial_forecast(df: pd.DataFrame = None, days_ahead: int = 30) -> Dict[str, Any]:
+    if df is None:
+        if os.path.exists(settings.PROCESSED_DATA_PATH):
+            df = pd.read_csv(settings.PROCESSED_DATA_PATH)
+        elif os.path.exists(settings.RAW_DATA_PATH):
+            df = pd.read_csv(settings.RAW_DATA_PATH)
+        else:
+            from src.data.generate_synthetic_data import generate_synthetic_transactions
+            df = generate_synthetic_transactions(num_records=15000)
         
     df['timestamp'] = pd.to_datetime(df['timestamp'])
     df['date'] = df['timestamp'].dt.date
@@ -73,5 +75,5 @@ def generate_financial_forecast(days_ahead: int = 30) -> Dict[str, Any]:
     }
 
 if __name__ == "__main__":
-    res = generate_financial_forecast(14)
+    res = generate_financial_forecast(days_ahead=14)
     print("Forecast Summary:\nProjected Total Revenue:", res['projected_total_revenue'])
