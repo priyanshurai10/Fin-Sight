@@ -1,32 +1,29 @@
-# Python Virtual Environment
+__pycache__/
+*.pyc
+*.pyo
 .venv/
 venv/
-ENV/
 env/
-
-# Byte-compiled / Optimized files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Pytest / Coverage
+.env
+*.egg-info/
+dist/
+build/
 .pytest_cache/
 .coverage
 htmlcov/
-
-# Operating System Files
+*.db
+data/raw/
+data/processed/
+src/ml/models/
+reports/output/
+dags/
+k8s/
+powerbi/
+docker/
+docker-compose.yml
+tests/
+docs/
 .DS_Store
 Thumbs.db
-
-# Database / SQLite local data
-data/processed/*.sqlite3
-
-# Distribution / Packaging
-build/
-dist/
-*.egg-info/
-
-# IDE / Editor Files
-.vscode/
-.idea/
-*.swp
+*.log
+node_modules/

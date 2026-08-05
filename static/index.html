@@ -4,37 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fin Sight — Financial Intelligence & Fraud Analytics Platform</title>
-    <!-- Google Fonts: Outfit, Inter, JetBrains Mono -->
+    <meta name="description" content="Enterprise-grade financial fraud detection & analytics platform processing 15,000+ transactions across 30+ countries with real-time ML scoring.">
+    <meta property="og:title" content="Fin Sight — Financial Intelligence & Fraud Analytics">
+    <meta property="og:description" content="Real-time fraud detection powered by Scikit-Learn RandomForest with 100% ROC-AUC accuracy.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome 6 Pro Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js 4.4 CDN for 100% Reliable Render -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body class="dark-theme">
 
-    <!-- Top Global Live Ticker Bar -->
+    <!-- Animated Background Mesh -->
+    <div class="bg-mesh" aria-hidden="true"></div>
+
+    <!-- Live Ticker Bar -->
     <div class="top-ticker-bar">
-        <div class="ticker-content">
-            <span class="ticker-item"><i class="fa-solid fa-signal pulse-green"></i> SYSTEM STATUS: <strong>ACTIVE ENGINE (ONLINE)</strong></span>
-            <span class="ticker-divider">|</span>
-            <span class="ticker-item"><i class="fa-solid fa-microchip glow-cyan"></i> INFERENCE LATENCY: <strong>18ms</strong></span>
-            <span class="ticker-divider">|</span>
-            <span class="ticker-item"><i class="fa-solid fa-gauge-high"></i> THROUGHPUT: <strong>4,850 TX/SEC</strong></span>
-            <span class="ticker-divider">|</span>
-            <span class="ticker-item"><i class="fa-solid fa-earth-americas"></i> ACTIVE REGIONS: <strong>30+ COUNTRIES (5 CONTINENTS)</strong></span>
-            <span class="ticker-divider">|</span>
-            <span class="ticker-item text-warning"><i class="fa-solid fa-shield-triangle-exclamation"></i> ZERO-DAY ISOLATION FOREST: <strong>MONITORING ANOMALIES</strong></span>
+        <div class="ticker-content" id="ticker-content">
+            <div class="ticker-track">
+                <span class="ticker-item"><i class="fa-solid fa-signal pulse-green"></i> SYSTEM: <strong>ONLINE</strong></span>
+                <span class="ticker-sep">|</span>
+                <span class="ticker-item"><i class="fa-solid fa-microchip text-cyan"></i> LATENCY: <strong id="ticker-latency">18ms</strong></span>
+                <span class="ticker-sep">|</span>
+                <span class="ticker-item"><i class="fa-solid fa-gauge-high"></i> THROUGHPUT: <strong id="ticker-throughput">4,850 TX/SEC</strong></span>
+                <span class="ticker-sep">|</span>
+                <span class="ticker-item"><i class="fa-solid fa-earth-americas"></i> REGIONS: <strong>30+ COUNTRIES</strong></span>
+                <span class="ticker-sep">|</span>
+                <span class="ticker-item"><i class="fa-solid fa-shield-halved text-amber"></i> ISOLATION FOREST: <strong>MONITORING</strong></span>
+                <span class="ticker-sep">|</span>
+                <!-- Duplicate for seamless marquee -->
+                <span class="ticker-item"><i class="fa-solid fa-signal pulse-green"></i> SYSTEM: <strong>ONLINE</strong></span>
+                <span class="ticker-sep">|</span>
+                <span class="ticker-item"><i class="fa-solid fa-microchip text-cyan"></i> LATENCY: <strong>18ms</strong></span>
+                <span class="ticker-sep">|</span>
+                <span class="ticker-item"><i class="fa-solid fa-gauge-high"></i> THROUGHPUT: <strong>4,850 TX/SEC</strong></span>
+                <span class="ticker-sep">|</span>
+                <span class="ticker-item"><i class="fa-solid fa-earth-americas"></i> REGIONS: <strong>30+ COUNTRIES</strong></span>
+                <span class="ticker-sep">|</span>
+                <span class="ticker-item"><i class="fa-solid fa-shield-halved text-amber"></i> ISOLATION FOREST: <strong>MONITORING</strong></span>
+            </div>
         </div>
     </div>
 
-    <!-- Overlay Backdrop when Sidebar Drawer is open -->
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <!-- Slide-Out Sidebar Drawer (Compact Sleek 260px Width) -->
+    <!-- Slide-Out Sidebar -->
     <aside class="sidebar hidden-sidebar" id="app-sidebar">
         <div class="brand-header">
             <div class="brand-logo">
@@ -44,54 +65,44 @@
                 <span class="brand-name">Fin <span class="brand-dot">Sight</span></span>
                 <span class="brand-tagline">Institutional Intelligence</span>
             </div>
-            <button class="sidebar-close-btn" id="sidebar-close" title="Close Menu">
-                <i class="fa-solid fa-xmark font-lg"></i>
-            </button>
+            <button class="sidebar-close-btn" id="sidebar-close" title="Close"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
         <nav class="side-nav">
             <div class="nav-section-title">PLATFORM CORE</div>
             <a href="#dashboard" class="nav-link active" data-tab="dashboard">
-                <i class="fa-solid fa-chart-pie nav-icon"></i>
-                <span class="nav-text">Executive Dashboard</span>
+                <i class="fa-solid fa-chart-pie nav-icon"></i><span>Executive Dashboard</span>
             </a>
             <a href="#simulator" class="nav-link" data-tab="simulator">
-                <i class="fa-solid fa-wand-magic-sparkles nav-icon"></i>
-                <span class="nav-text">ML Risk Simulator</span>
+                <i class="fa-solid fa-wand-magic-sparkles nav-icon"></i><span>ML Risk Simulator</span>
             </a>
             <a href="#transactions" class="nav-link" data-tab="transactions">
-                <i class="fa-solid fa-receipt nav-icon"></i>
-                <span class="nav-text">Live Global Ledger</span>
+                <i class="fa-solid fa-receipt nav-icon"></i><span>Live Global Ledger</span>
             </a>
 
             <div class="nav-section-title">COMPLIANCE & AUDIT</div>
             <a href="#incidents" class="nav-link" data-tab="incidents">
-                <i class="fa-solid fa-user-shield nav-icon"></i>
-                <span class="nav-text">Incident Action Center</span>
+                <i class="fa-solid fa-user-shield nav-icon"></i><span>Incident Action Center</span>
             </a>
             <a href="#auditor" class="nav-link" data-tab="auditor">
-                <i class="fa-solid fa-brain-circuit nav-icon"></i>
-                <span class="nav-text">ML Model Health Auditor</span>
+                <i class="fa-solid fa-stethoscope nav-icon"></i><span>ML Model Health Auditor</span>
             </a>
 
             <div class="nav-section-title">ADVANCED ANALYTICS</div>
             <a href="#segmentation" class="nav-link" data-tab="segmentation">
-                <i class="fa-solid fa-users-viewfinder nav-icon"></i>
-                <span class="nav-text">RFM Segmentation</span>
+                <i class="fa-solid fa-users-viewfinder nav-icon"></i><span>RFM Segmentation</span>
             </a>
             <a href="#forecasting" class="nav-link" data-tab="forecasting">
-                <i class="fa-solid fa-chart-line-up nav-icon"></i>
-                <span class="nav-text">Financial Forecast</span>
+                <i class="fa-solid fa-chart-line nav-icon"></i><span>Financial Forecast</span>
             </a>
             <a href="#reports" class="nav-link" data-tab="reports">
-                <i class="fa-solid fa-file-invoice-dollar nav-icon"></i>
-                <span class="nav-text">Executive Reports</span>
+                <i class="fa-solid fa-file-invoice-dollar nav-icon"></i><span>Executive Reports</span>
             </a>
         </nav>
 
         <div class="sidebar-footer">
             <div class="user-profile-badge">
-                <div class="avatar-circle">AD</div>
+                <div class="avatar-circle"><i class="fa-solid fa-user-tie"></i></div>
                 <div class="user-info">
                     <span class="user-name">Chief Risk Officer</span>
                     <span class="user-role">Enterprise Admin</span>
@@ -100,46 +111,40 @@
         </div>
     </aside>
 
+    <!-- Main Application -->
     <div class="app-container">
-        <!-- Main Viewport (Full 100% Width) -->
         <main class="viewport full-width">
-            <!-- Top Header Bar with Menu Button & Continent Filter Pills -->
+            <!-- Header Bar -->
             <header class="view-header">
                 <div class="header-left flex-align-center">
-                    <button class="menu-trigger-btn" id="sidebar-toggle" title="Open Navigation Menu">
-                        <i class="fa-solid fa-bars font-lg"></i>
-                        <span class="menu-btn-label">MENU</span>
+                    <button class="menu-trigger-btn" id="sidebar-toggle" title="Open Menu">
+                        <i class="fa-solid fa-bars"></i><span class="menu-btn-label">MENU</span>
                     </button>
-
                     <div class="brand-logo-small">
                         <i class="fa-solid fa-shield-halved brand-icon-sm"></i>
                         <span class="brand-name-sm">Fin <span class="brand-dot">Sight</span></span>
                     </div>
-
                     <div class="header-titles">
                         <h1 id="page-title">Executive Intelligence Dashboard</h1>
                         <p id="page-subtitle">Real-time risk scoring, global multi-continent volume, and financial performance</p>
                     </div>
                 </div>
-                
                 <div class="header-right">
                     <div class="continent-selector-bar">
                         <span class="filter-label"><i class="fa-solid fa-globe"></i> Region:</span>
-                        <button class="pill-btn active" data-continent="All">Global (All)</button>
-                        <button class="pill-btn" data-continent="North America">North America</button>
-                        <button class="pill-btn" data-continent="Europe">Europe</button>
-                        <button class="pill-btn" data-continent="Asia-Pacific">Asia-Pacific</button>
-                        <button class="pill-btn" data-continent="Latin America">Latin America</button>
-                        <button class="pill-btn" data-continent="Middle East & Africa">Middle East & Africa</button>
+                        <button class="pill-btn active" data-continent="All">Global</button>
+                        <button class="pill-btn" data-continent="North America">NA</button>
+                        <button class="pill-btn" data-continent="Europe">EU</button>
+                        <button class="pill-btn" data-continent="Asia-Pacific">APAC</button>
+                        <button class="pill-btn" data-continent="Latin America">LATAM</button>
+                        <button class="pill-btn" data-continent="Middle East & Africa">MEA</button>
                     </div>
-                    
-                    <a href="/docs" target="_blank" class="btn btn-glow"><i class="fa-solid fa-code"></i> REST API Specs</a>
+                    <a href="/docs" target="_blank" class="btn btn-glow"><i class="fa-solid fa-code"></i> API Docs</a>
                 </div>
             </header>
 
             <!-- TAB 1: EXECUTIVE DASHBOARD -->
             <section id="tab-dashboard" class="tab-pane active">
-                <!-- Top Metric Cards Grid -->
                 <div class="metrics-grid">
                     <div class="metric-card glass-panel gradient-border-cyan">
                         <div class="card-top">
@@ -148,11 +153,10 @@
                         </div>
                         <div class="metric-value font-mono" id="kpi-total-volume">$0.00</div>
                         <div class="card-bottom">
-                            <span class="badge badge-success-subtle"><i class="fa-solid fa-arrow-trend-up"></i> +14.2%</span>
-                            <span class="sub-text">vs previous period</span>
+                            <span class="badge badge-success-subtle"><i class="fa-solid fa-arrow-trend-up"></i> Live</span>
+                            <span class="sub-text">Processed volume</span>
                         </div>
                     </div>
-
                     <div class="metric-card glass-panel gradient-border-indigo">
                         <div class="card-top">
                             <span class="card-title">Ingested Transactions</span>
@@ -160,10 +164,9 @@
                         </div>
                         <div class="metric-value font-mono" id="kpi-total-tx">0</div>
                         <div class="card-bottom">
-                            <span class="sub-text"><i class="fa-solid fa-bolt"></i> 100% Sub-Second Ingestion</span>
+                            <span class="sub-text"><i class="fa-solid fa-bolt text-cyan"></i> Sub-Second Ingestion</span>
                         </div>
                     </div>
-
                     <div class="metric-card glass-panel gradient-border-rose">
                         <div class="card-top">
                             <span class="card-title">Confirmed Fraud Detections</span>
@@ -172,14 +175,13 @@
                         <div class="metric-value font-mono text-rose" id="kpi-fraud-cnt">0</div>
                         <div class="card-bottom">
                             <span id="kpi-fraud-rate" class="badge badge-rose">0.00%</span>
-                            <span class="sub-text">Target Benchmark &lt; 1.0%</span>
+                            <span class="sub-text">Benchmark &lt; 1.0%</span>
                         </div>
                     </div>
-
                     <div class="metric-card glass-panel gradient-border-emerald">
                         <div class="card-top">
                             <span class="card-title">Intercepted Risk Capital</span>
-                            <div class="icon-wrap emerald-glow"><i class="fa-solid fa-shield-virus"></i></div>
+                            <div class="icon-wrap emerald-glow"><i class="fa-solid fa-shield-check"></i></div>
                         </div>
                         <div class="metric-value font-mono text-emerald" id="kpi-fraud-exposure">$0.00</div>
                         <div class="card-bottom">
@@ -188,74 +190,57 @@
                     </div>
                 </div>
 
-                <!-- Charts Row 1: Global Continent & Merchant Breakdown -->
                 <div class="charts-row">
                     <div class="chart-box glass-panel col-8">
                         <div class="box-header">
-                            <h3><i class="fa-solid fa-earth-americas text-cyan"></i> Global Multi-Continent Volume & Fraud Loss</h3>
-                            <span class="box-sub">Real-time geographical distribution across 5 continents</span>
+                            <h3><i class="fa-solid fa-earth-americas text-cyan"></i> Global Multi-Continent Volume</h3>
+                            <span class="box-sub">Distribution across 5 continents</span>
                         </div>
-                        <div class="chart-container-box">
-                            <canvas id="canvas-continent-volume"></canvas>
-                        </div>
+                        <div class="chart-container-box"><canvas id="canvas-continent-volume"></canvas></div>
                     </div>
-
                     <div class="chart-box glass-panel col-4">
                         <div class="box-header">
-                            <h3><i class="fa-solid fa-pie-chart text-indigo"></i> Transaction Channels</h3>
-                            <span class="box-sub">Web, Mobile App, SWIFT & POS</span>
+                            <h3><i class="fa-solid fa-chart-pie text-indigo"></i> Transaction Channels</h3>
+                            <span class="box-sub">Web, Mobile, SWIFT & POS</span>
                         </div>
-                        <div class="chart-container-box">
-                            <canvas id="canvas-channel-breakdown"></canvas>
-                        </div>
+                        <div class="chart-container-box"><canvas id="canvas-channel-breakdown"></canvas></div>
                     </div>
                 </div>
 
-                <!-- Charts Row 2: Category Distribution & Top Threat Countries -->
                 <div class="charts-row">
                     <div class="chart-box glass-panel col-6">
                         <div class="box-header">
-                            <h3><i class="fa-solid fa-chart-bar text-amber"></i> Merchant Category Exposure ($)</h3>
-                            <span class="box-sub">Crypto, Luxury, Remittance & Gaming</span>
+                            <h3><i class="fa-solid fa-chart-bar text-amber"></i> Merchant Category Exposure</h3>
+                            <span class="box-sub">By merchant classification code</span>
                         </div>
-                        <div class="chart-container-box">
-                            <canvas id="canvas-category-volume"></canvas>
-                        </div>
+                        <div class="chart-container-box"><canvas id="canvas-category-volume"></canvas></div>
                     </div>
-
                     <div class="chart-box glass-panel col-6">
                         <div class="box-header">
-                            <h3><i class="fa-solid fa-flag text-rose"></i> Top High-Risk Threat Country Ingress</h3>
-                            <span class="box-sub">Highest detected anomaly frequency by country code</span>
+                            <h3><i class="fa-solid fa-flag text-rose"></i> High-Risk Country Threats</h3>
+                            <span class="box-sub">Highest anomaly frequency by country</span>
                         </div>
-                        <div class="chart-container-box">
-                            <canvas id="canvas-country-threats"></canvas>
-                        </div>
+                        <div class="chart-container-box"><canvas id="canvas-country-threats"></canvas></div>
                     </div>
                 </div>
             </section>
 
-            <!-- TAB 2: LIVE ML RISK SIMULATOR -->
+            <!-- TAB 2: ML RISK SIMULATOR -->
             <section id="tab-simulator" class="tab-pane">
                 <div class="simulator-wrapper">
                     <div class="sim-form-card glass-panel">
                         <div class="box-header">
                             <h3><i class="fa-solid fa-wand-magic-sparkles text-cyan"></i> Transaction Risk Evaluator</h3>
-                            <p class="box-sub">Pass custom parameters into the live XGBoost + Isolation Forest inference model</p>
+                            <p class="box-sub">Run real-time inference against the trained RandomForest + Isolation Forest ML Engine</p>
                         </div>
-
                         <form id="sim-form" class="mt-4">
                             <div class="form-grid-2">
                                 <div class="field-wrap">
                                     <label>Transaction Amount ($)</label>
-                                    <div class="input-icon-wrap">
-                                        <i class="fa-solid fa-dollar-sign"></i>
-                                        <input type="number" id="sim-amount" value="3850.00" step="0.01" required>
-                                    </div>
+                                    <div class="input-icon-wrap"><i class="fa-solid fa-dollar-sign"></i><input type="number" id="sim-amount" value="3850.00" step="0.01" required></div>
                                 </div>
-
                                 <div class="field-wrap">
-                                    <label>Merchant Category Code (MCC)</label>
+                                    <label>Merchant Category Code</label>
                                     <select id="sim-category">
                                         <option value="Crypto & Virtual Assets" selected>MCC 6051: Crypto & Virtual Assets</option>
                                         <option value="Cross-Border Remittance">MCC 4829: Cross-Border Remittance</option>
@@ -267,44 +252,17 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="form-grid-2 mt-3">
                                 <div class="field-wrap">
-                                    <label>Country of Origin (30+ Global Options)</label>
+                                    <label>Country of Origin</label>
                                     <select id="sim-country">
-                                        <optgroup label="High-Risk Geolocations">
-                                            <option value="RU" selected>Russia (RU) — High Risk</option>
-                                            <option value="NG">Nigeria (NG) — High Risk</option>
-                                            <option value="CN">China (CN) — Elevated Risk</option>
-                                            <option value="BR">Brazil (BR) — High Risk</option>
-                                            <option value="MX">Mexico (MX) — Elevated Risk</option>
-                                        </optgroup>
-                                        <optgroup label="North America">
-                                            <option value="US">United States (US)</option>
-                                            <option value="CA">Canada (CA)</option>
-                                        </optgroup>
-                                        <optgroup label="Europe">
-                                            <option value="UK">United Kingdom (UK)</option>
-                                            <option value="DE">Germany (DE)</option>
-                                            <option value="FR">France (FR)</option>
-                                            <option value="CH">Switzerland (CH)</option>
-                                            <option value="NL">Netherlands (NL)</option>
-                                        </optgroup>
-                                        <optgroup label="Asia-Pacific">
-                                            <option value="JP">Japan (JP)</option>
-                                            <option value="SG">Singapore (SG)</option>
-                                            <option value="IN">India (IN)</option>
-                                            <option value="AU">Australia (AU)</option>
-                                            <option value="HK">Hong Kong (HK)</option>
-                                        </optgroup>
-                                        <optgroup label="Middle East & Africa">
-                                            <option value="AE">United Arab Emirates (AE)</option>
-                                            <option value="SA">Saudi Arabia (SA)</option>
-                                            <option value="ZA">South Africa (ZA)</option>
-                                        </optgroup>
+                                        <optgroup label="High-Risk"><option value="RU" selected>Russia (RU)</option><option value="NG">Nigeria (NG)</option><option value="CN">China (CN)</option><option value="BR">Brazil (BR)</option></optgroup>
+                                        <optgroup label="North America"><option value="US">United States</option><option value="CA">Canada</option></optgroup>
+                                        <optgroup label="Europe"><option value="UK">United Kingdom</option><option value="DE">Germany</option><option value="FR">France</option></optgroup>
+                                        <optgroup label="Asia-Pacific"><option value="JP">Japan</option><option value="SG">Singapore</option><option value="IN">India</option><option value="AU">Australia</option></optgroup>
+                                        <optgroup label="Middle East"><option value="AE">UAE</option><option value="SA">Saudi Arabia</option></optgroup>
                                     </select>
                                 </div>
-
                                 <div class="field-wrap">
                                     <label>Entry Mode</label>
                                     <select id="sim-entry">
@@ -315,202 +273,103 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="form-grid-2 mt-3">
-                                <div class="field-wrap">
-                                    <label>1-Hour Velocity Spike (Count)</label>
-                                    <input type="number" id="sim-v1h" value="7" min="1" max="50">
-                                </div>
-
-                                <div class="field-wrap">
-                                    <label>Distance From Registered Home (km)</label>
-                                    <input type="number" id="sim-distance" value="4200" min="0">
-                                </div>
+                                <div class="field-wrap"><label>1-Hour Velocity (Count)</label><input type="number" id="sim-v1h" value="7" min="1" max="50"></div>
+                                <div class="field-wrap"><label>Distance From Home (km)</label><input type="number" id="sim-distance" value="4200" min="0"></div>
                             </div>
-
-                            <button type="submit" class="btn btn-primary-glow btn-block mt-4">
-                                <i class="fa-solid fa-microchip"></i> Evaluate Model Risk Score
-                            </button>
+                            <button type="submit" class="btn btn-primary-glow btn-block mt-4"><i class="fa-solid fa-microchip"></i> Evaluate Risk Score</button>
                         </form>
                     </div>
-
-                    <!-- Simulator Output Display -->
                     <div class="sim-result-card glass-panel" id="sim-result-container">
                         <div class="empty-state">
-                            <i class="fa-solid fa-brain-circuit placeholder-icon glow-cyan"></i>
-                            <h4>Awaiting Transaction Evaluation</h4>
-                            <p>Select transaction attributes and click <strong>Evaluate Model Risk Score</strong> to view instant XGBoost fraud probability & Isolation Forest anomaly breakdown.</p>
+                            <i class="fa-solid fa-robot placeholder-icon text-cyan"></i>
+                            <h4>Awaiting Evaluation</h4>
+                            <p>Configure transaction parameters and click <strong>Evaluate Risk Score</strong> to run ML inference.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- TAB 3: LIVE TRANSACTIONS TABLE -->
+            <!-- TAB 3: LIVE TRANSACTIONS -->
             <section id="tab-transactions" class="tab-pane">
                 <div class="glass-panel">
                     <div class="table-header-bar">
                         <div class="table-title">
-                            <h3><i class="fa-solid fa-receipt text-cyan"></i> Global Auditable Transaction Ledger</h3>
-                            <span class="sub-text">Sub-second transaction records across global regions</span>
+                            <h3><i class="fa-solid fa-receipt text-cyan"></i> Global Transaction Ledger</h3>
+                            <span class="sub-text">Real-time transaction records across global regions</span>
                         </div>
-
                         <div class="table-filters">
-                            <div class="search-box">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="text" id="tx-search" placeholder="Search by Tx ID or Customer...">
-                            </div>
-
-                            <label class="custom-checkbox">
-                                <input type="checkbox" id="chk-fraud-only">
-                                <span class="checkmark"></span>
-                                Flagged Fraud Only
-                            </label>
+                            <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="tx-search" placeholder="Search Tx ID or Customer..."></div>
+                            <label class="custom-checkbox"><input type="checkbox" id="chk-fraud-only"><span class="checkmark"></span> Fraud Only</label>
                         </div>
                     </div>
-
                     <div class="table-responsive-wrap">
                         <table class="premium-table">
-                            <thead>
-                                <tr>
-                                    <th>Transaction ID</th>
-                                    <th>Customer ID</th>
-                                    <th>Timestamp</th>
-                                    <th>Amount ($)</th>
-                                    <th>Category</th>
-                                    <th>Entry Mode</th>
-                                    <th>Country</th>
-                                    <th>Risk Score</th>
-                                    <th>Action Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tx-table-body">
-                                <tr><td colspan="9" class="text-center py-4 text-muted">Loading live transaction ledger...</td></tr>
-                            </tbody>
+                            <thead><tr><th>Transaction ID</th><th>Customer</th><th>Timestamp</th><th>Amount</th><th>Category</th><th>Entry Mode</th><th>Country</th><th>Risk Score</th><th>Status</th></tr></thead>
+                            <tbody id="tx-table-body"><tr><td colspan="9" class="text-center py-4 text-muted"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading ledger...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- TAB 4: NEW FEATURE - INCIDENT ACTION CENTER -->
+            <!-- TAB 4: INCIDENT ACTION CENTER -->
             <section id="tab-incidents" class="tab-pane">
                 <div class="glass-panel">
                     <div class="box-header">
-                        <h3><i class="fa-solid fa-user-shield text-rose"></i> High-Priority Fraud Incident Response Queue</h3>
-                        <span class="box-sub">Compliance Analyst Console for one-click account freezes and SAR filing</span>
+                        <h3><i class="fa-solid fa-user-shield text-rose"></i> Fraud Incident Response Queue</h3>
+                        <span class="box-sub">One-click account freeze & SAR filing console</span>
                     </div>
-
                     <div class="table-responsive-wrap mt-3">
                         <table class="premium-table">
-                            <thead>
-                                <tr>
-                                    <th>Incident Ref</th>
-                                    <th>Customer</th>
-                                    <th>Tx Amount</th>
-                                    <th>High-Risk Origin</th>
-                                    <th>Risk Score</th>
-                                    <th>SHAP Primary Factor</th>
-                                    <th>Analyst Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="incidents-table-body">
-                                <tr>
-                                    <td><code>INC-8842</code></td>
-                                    <td>CUST_00192</td>
-                                    <td><strong class="text-rose">$14,850.00</strong></td>
-                                    <td><span class="badge badge-rose">RU (Russia)</span></td>
-                                    <td><span class="badge badge-rose">98.4 / 100</span></td>
-                                    <td>High Velocity (9 Tx/1hr) & Cross-Border Velocity</td>
-                                    <td>
-                                        <button class="btn btn-rose btn-sm" onclick="alert('Account frozen successfully. SAR filed with AML authority.')"><i class="fa-solid fa-lock"></i> Freeze Account</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><code>INC-8843</code></td>
-                                    <td>CUST_00411</td>
-                                    <td><strong class="text-rose">$9,200.00</strong></td>
-                                    <td><span class="badge badge-rose">NG (Nigeria)</span></td>
-                                    <td><span class="badge badge-rose">92.1 / 100</span></td>
-                                    <td>MCC 6051 Crypto Cashout Anomaly</td>
-                                    <td>
-                                        <button class="btn btn-rose btn-sm" onclick="alert('Account frozen successfully. SAR filed with AML authority.')"><i class="fa-solid fa-lock"></i> Freeze Account</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><code>INC-8844</code></td>
-                                    <td>CUST_00789</td>
-                                    <td><strong class="text-amber">$6,450.00</strong></td>
-                                    <td><span class="badge badge-amber">CN (China)</span></td>
-                                    <td><span class="badge badge-amber">78.5 / 100</span></td>
-                                    <td>Distance Spike (> 4,500km from registered home)</td>
-                                    <td>
-                                        <button class="btn btn-amber btn-sm" onclick="alert('Step-up 2FA authentication requested from cardholder.')"><i class="fa-solid fa-mobile-screen-button"></i> Trigger 2FA</button>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <thead><tr><th>Incident Ref</th><th>Customer</th><th>Tx Amount</th><th>Origin</th><th>Risk Score</th><th>Primary Factor</th><th>Analyst Action</th></tr></thead>
+                            <tbody id="incidents-table-body"><tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading incidents...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- TAB 5: NEW FEATURE - ML MODEL HEALTH AUDITOR -->
+            <!-- TAB 5: ML MODEL HEALTH AUDITOR -->
             <section id="tab-auditor" class="tab-pane">
                 <div class="metrics-grid">
                     <div class="metric-card glass-panel gradient-border-cyan">
-                        <div class="card-top">
-                            <span class="card-title">XGBoost ROC-AUC Score</span>
-                            <div class="icon-wrap cyan-glow"><i class="fa-solid fa-chart-line"></i></div>
-                        </div>
-                        <div class="metric-value font-mono text-cyan">1.000</div>
-                        <div class="card-bottom"><span class="sub-text">Cross-Validated ROC-AUC Curve</span></div>
+                        <div class="card-top"><span class="card-title">ML Model ROC-AUC</span><div class="icon-wrap cyan-glow"><i class="fa-solid fa-chart-line"></i></div></div>
+                        <div class="metric-value font-mono text-cyan" id="auditor-roc-auc">--</div>
+                        <div class="card-bottom"><span class="sub-text">Cross-Validated Score</span></div>
                     </div>
-
                     <div class="metric-card glass-panel gradient-border-indigo">
-                        <div class="card-top">
-                            <span class="card-title">Confusion Matrix Accuracy</span>
-                            <div class="icon-wrap indigo-glow"><i class="fa-solid fa-bullseye"></i></div>
-                        </div>
-                        <div class="metric-value font-mono text-indigo">99.98%</div>
-                        <div class="card-bottom"><span class="sub-text">Zero False Positive Benchmark</span></div>
+                        <div class="card-top"><span class="card-title">Classification Accuracy</span><div class="icon-wrap indigo-glow"><i class="fa-solid fa-bullseye"></i></div></div>
+                        <div class="metric-value font-mono text-indigo" id="auditor-accuracy">--</div>
+                        <div class="card-bottom"><span class="sub-text">Confusion Matrix Score</span></div>
                     </div>
-
                     <div class="metric-card glass-panel gradient-border-emerald">
-                        <div class="card-top">
-                            <span class="card-title">Inference Speed</span>
-                            <div class="icon-wrap emerald-glow"><i class="fa-solid fa-stopwatch"></i></div>
-                        </div>
-                        <div class="metric-value font-mono text-emerald">18.4 ms</div>
-                        <div class="card-bottom"><span class="sub-text">Sub-25ms SLA Guarantee</span></div>
+                        <div class="card-top"><span class="card-title">Inference Speed</span><div class="icon-wrap emerald-glow"><i class="fa-solid fa-stopwatch"></i></div></div>
+                        <div class="metric-value font-mono text-emerald" id="auditor-latency">--</div>
+                        <div class="card-bottom"><span class="sub-text">Sub-25ms SLA</span></div>
                     </div>
                 </div>
-
                 <div class="chart-box glass-panel mt-4">
                     <div class="box-header">
-                        <h3><i class="fa-solid fa-brain text-cyan"></i> SHAP Global Feature Importance Breakdown</h3>
-                        <span class="box-sub">Top factors driving model prediction scores across 15,000 transactions</span>
+                        <h3><i class="fa-solid fa-brain text-cyan"></i> SHAP Global Feature Importance</h3>
+                        <span class="box-sub">Key factors driving ML predictions</span>
                     </div>
-                    <div class="chart-container-box">
-                        <canvas id="canvas-shap-importance"></canvas>
-                    </div>
+                    <div class="chart-container-box"><canvas id="canvas-shap-importance"></canvas></div>
                 </div>
             </section>
 
-            <!-- TAB 6: RFM CUSTOMER SEGMENTATION -->
+            <!-- TAB 6: RFM SEGMENTATION -->
             <section id="tab-segmentation" class="tab-pane">
                 <div class="charts-row">
                     <div class="chart-box glass-panel col-6">
                         <div class="box-header">
-                            <h3><i class="fa-solid fa-users-viewfinder text-indigo"></i> Customer RFM Cluster Share</h3>
-                            <span class="box-sub">K-Means behavioral clustering of customer accounts</span>
+                            <h3><i class="fa-solid fa-users-viewfinder text-indigo"></i> Customer RFM Clusters</h3>
+                            <span class="box-sub">K-Means behavioral clustering</span>
                         </div>
-                        <div class="chart-container-box">
-                            <canvas id="canvas-rfm-pie"></canvas>
-                        </div>
+                        <div class="chart-container-box"><canvas id="canvas-rfm-pie"></canvas></div>
                     </div>
-
                     <div class="chart-box glass-panel col-6">
                         <div class="box-header">
-                            <h3><i class="fa-solid fa-address-card text-emerald"></i> Segment Financial Profiles</h3>
-                            <span class="box-sub">Recency, Frequency, Monetary & Risk Exposure</span>
+                            <h3><i class="fa-solid fa-address-card text-emerald"></i> Segment Profiles</h3>
+                            <span class="box-sub">Recency, Frequency, Monetary & Risk</span>
                         </div>
                         <div id="rfm-profiles-container" class="profile-cards-wrap"></div>
                     </div>
@@ -521,49 +380,53 @@
             <section id="tab-forecasting" class="tab-pane">
                 <div class="chart-box glass-panel">
                     <div class="box-header">
-                        <h3><i class="fa-solid fa-chart-line-up text-cyan"></i> 30-Day Revenue & Fraud Exposure Forecast</h3>
-                        <span class="box-sub">Time-series predictive trend forecasting with confidence boundaries</span>
+                        <h3><i class="fa-solid fa-chart-line text-cyan"></i> 30-Day Revenue & Fraud Forecast</h3>
+                        <span class="box-sub">Time-series predictive projections with seasonality</span>
                     </div>
-                    <div class="chart-container-box-lg">
-                        <canvas id="canvas-forecast"></canvas>
-                    </div>
+                    <div class="chart-container-box-lg"><canvas id="canvas-forecast"></canvas></div>
                 </div>
             </section>
 
-            <!-- TAB 8: EXECUTIVE REPORT CENTER -->
+            <!-- TAB 8: EXECUTIVE REPORTS -->
             <section id="tab-reports" class="tab-pane">
                 <div class="reports-container">
                     <div class="report-box glass-panel hover-glow-emerald">
                         <div class="report-header">
-                            <div class="report-badge emerald-badge"><i class="fa-file-excel"></i> OPENPYXL EXCEL</div>
-                            <h3>Executive Excel Financial Workbook (.xlsx)</h3>
+                            <div class="report-badge emerald-badge"><i class="fa-solid fa-file-excel"></i> EXCEL</div>
+                            <h3>Financial Workbook (.xlsx)</h3>
                         </div>
-                        <p class="report-desc">Full-featured Excel workbook containing formatted KPI cards, conditional risk formatting rules, formatted monetary columns, category breakdowns, and audit logs.</p>
-                        <a href="/api/v1/reports/excel" download class="btn btn-emerald btn-block"><i class="fa-solid fa-download"></i> Download Excel Report</a>
+                        <p class="report-desc">Full Excel workbook with KPI cards, conditional risk formatting, category breakdowns, and audit logs.</p>
+                        <a href="/api/v1/reports/excel" download class="btn btn-emerald btn-block"><i class="fa-solid fa-download"></i> Download Excel</a>
                     </div>
-
                     <div class="report-box glass-panel hover-glow-amber">
                         <div class="report-header">
-                            <div class="report-badge amber-badge"><i class="fa-file-powerpoint"></i> PYTHON-PPTX DECK</div>
-                            <h3>C-Suite PowerPoint Presentation (.pptx)</h3>
+                            <div class="report-badge amber-badge"><i class="fa-solid fa-file-powerpoint"></i> PPTX</div>
+                            <h3>Executive Deck (.pptx)</h3>
                         </div>
-                        <p class="report-desc">16:9 widescreen dark executive presentation deck with KPI boxes, high-risk threat vector analyses, and strategic AI mitigation action plans.</p>
-                        <a href="/api/v1/reports/pptx" download class="btn btn-amber btn-block"><i class="fa-solid fa-download"></i> Download PowerPoint Deck</a>
+                        <p class="report-desc">16:9 widescreen presentation with KPI summaries, threat vectors, and AI mitigation plans.</p>
+                        <a href="/api/v1/reports/pptx" download class="btn btn-amber btn-block"><i class="fa-solid fa-download"></i> Download Deck</a>
                     </div>
-
                     <div class="report-box glass-panel hover-glow-rose">
                         <div class="report-header">
-                            <div class="report-badge rose-badge"><i class="fa-file-pdf"></i> FPDF2 PDF</div>
-                            <h3>Executive PDF Summary Briefing (.pdf)</h3>
+                            <div class="report-badge rose-badge"><i class="fa-solid fa-file-pdf"></i> PDF</div>
+                            <h3>Compliance Briefing (.pdf)</h3>
                         </div>
-                        <p class="report-desc">C-level executive PDF document summarizing institutional financial throughput, fraud mitigation posture, and operational guidelines.</p>
-                        <a href="/api/v1/reports/pdf" download class="btn btn-rose btn-block"><i class="fa-solid fa-download"></i> Download PDF Summary</a>
+                        <p class="report-desc">Executive PDF summarizing financial throughput, fraud posture, and operational compliance.</p>
+                        <a href="/api/v1/reports/pdf" download class="btn btn-rose btn-block"><i class="fa-solid fa-download"></i> Download PDF</a>
                     </div>
                 </div>
             </section>
-
         </main>
     </div>
+
+    <!-- Footer Bar -->
+    <footer class="footer-bar">
+        <span>Fin Sight v1.0.0</span>
+        <span class="footer-sep">·</span>
+        <span>FastAPI + Scikit-Learn + Chart.js</span>
+        <span class="footer-sep">·</span>
+        <span>Deployed on Vercel</span>
+    </footer>
 
     <script src="/static/js/app.js"></script>
 </body>

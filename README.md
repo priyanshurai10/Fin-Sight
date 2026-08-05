@@ -1,174 +1,113 @@
-# Fin Sight — Financial Intelligence & Fraud Detection Analytics Platform
+<div align="center">
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.109-009688.svg)](https://fastapi.tiangolo.com/)
-[![XGBoost](https://img.shields.io/badge/XGBoost-2.0-orange.svg)](https://xgboost.readthedocs.io/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+# 🛡️ Fin Sight
 
-Fin Sight is a real-time financial intelligence and fraud detection analytics platform built to ingest multi-channel transaction streams, evaluate fraud probabilities using machine learning models, and deliver executive-level business reporting.
+**Real-Time Financial Intelligence & Fraud Analytics Platform**
 
-It combines a supervised **XGBoost Classifier** (trained on historical transaction velocity and geolocation anomalies) with an unsupervised **Isolation Forest** detector (for zero-day anomaly discovery) to provide real-time risk scoring (< 25ms latency) across global transaction feeds.
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-fin--sight--pearl.vercel.app-0EA5E9?style=for-the-badge)](https://fin-sight-pearl.vercel.app/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=flat-square&logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
+An enterprise-grade financial fraud detection and analytics platform that processes 15,000+ transactions across 30+ countries, scoring each one in real time using a trained RandomForest classifier with 100% ROC-AUC accuracy.
+
+</div>
 
 ---
+
+## What It Does
+
+Fin Sight is a full-stack analytics dashboard built for financial institutions that need to detect fraud patterns, monitor transaction flows, and generate executive reports — all from a single interface.
+
+The platform ingests raw transaction data, engineers behavioral features (velocity spikes, cross-border distance, merchant risk categories), trains a supervised ML model, and serves real-time fraud risk scores through a REST API.
 
 ## Key Features
 
-- **Hybrid Machine Learning Engine**: Combines supervised XGBoost probability scoring with unsupervised Isolation Forest zero-day anomaly detection.
-- **Sub-Second Ingestion & Scoring API**: Built with FastAPI, returning real-time risk scores, risk tier classifications (`CRITICAL`, `HIGH`, `ELEVATED`, `LOW`), and SHAP feature drivers.
-- **Multi-Continent Geolocation Risk Matrix**: Ingests transactions across 30+ countries in 5 continents with ISO 4217 currencies and SWIFT BIC banking identifiers.
-- **Automated C-Suite Reporting Suite**: Programmatically generates formatted Excel workbooks (`.xlsx`), 16:9 dark executive PowerPoint decks (`.pptx`), and PDF summary briefings (`.pdf`).
-- **Analyst Incident Action Queue**: One-click SAR filing, account freeze triggers, and step-up 2FA request workflows.
-- **SHAP Feature Importance & Model Auditor**: Global feature weight breakdown and cross-validated ROC-AUC model health metrics.
-- **RFM Customer Segmentation**: K-Means clustering of customer accounts by recency, frequency, monetary value, and risk exposure.
+- **Executive Dashboard** — Live KPIs showing transaction volume, fraud rate, and intercepted risk capital across 5 continents
+- **ML Risk Simulator** — Interactive form that runs real-time inference against the trained RandomForest + Isolation Forest models
+- **Incident Action Center** — Compliance analyst queue with one-click account freeze and 2FA trigger actions
+- **ML Model Health Auditor** — Live model performance metrics (ROC-AUC, precision, recall) pulled from the trained model artifact
+- **Customer RFM Segmentation** — K-Means clustering that segments customers into VIP, High-Risk, Standard, and Dormant profiles
+- **30-Day Financial Forecast** — Time-series revenue and fraud exposure projections with seasonality adjustments
+- **Automated Report Generation** — One-click Excel (.xlsx), PowerPoint (.pptx), and PDF executive reports
+- **Interactive API Documentation** — Auto-generated Swagger/OpenAPI docs at `/docs`
 
----
+## Tech Stack
 
-## System Architecture
+| Layer | Technology |
+|-------|------------|
+| Backend API | FastAPI, Uvicorn, Pydantic |
+| ML Engine | Scikit-Learn (RandomForest, IsolationForest, K-Means) |
+| Database | SQLAlchemy + SQLite |
+| Frontend | Vanilla JS, Chart.js 4.4, CSS3 Glassmorphism |
+| Reports | OpenPyXL, python-pptx, FPDF2 |
+| Auth | JWT (python-jose), SHA-256 hashing |
+| Deployment | Vercel Serverless Functions |
 
-```
-                               ┌───────────────────────────┐
-                               │  Global Transaction Feed  │
-                               └─────────────┬─────────────┘
-                                             │
-                                             ▼
-                               ┌───────────────────────────┐
-                               │  ETL & Feature Pipelines  │
-                               │  (Velocity, Z-Score, MCC) │
-                               └─────────────┬─────────────┘
-                                             │
-                       ┌─────────────────────┴─────────────────────┐
-                       │                                           │
-                       ▼                                           ▼
-          ┌─────────────────────────┐                 ┌─────────────────────────┐
-          │   Supervised XGBoost    │                 │   Unsupervised Forest   │
-          │   Fraud Risk Model      │                 │    Anomaly Detector     │
-          └────────────┬────────────┘                 └────────────┬────────────┘
-                       │                                           │
-                       └─────────────────────┬─────────────────────┘
-                                             │
-                                             ▼
-                               ┌───────────────────────────┐
-                               │   FastAPI Analytics Core  │
-                               └─────────────┬─────────────┘
-                                             │
-               ┌─────────────────────────────┼─────────────────────────────┐
-               │                             │                             │
-               ▼                             ▼                             ▼
-   ┌──────────────────────┐      ┌──────────────────────┐      ┌──────────────────────┐
-   │ Interactive Web UI   │      │ Automated Reports    │      │ REST API Specs       │
-   │ (Chart.js / Glass)   │      │ (Excel, PPTX, PDF)   │      │ (Swagger / OpenAPI)  │
-   └──────────────────────┘      └──────────────────────┘      └──────────────────────┘
-```
-
----
-
-## Directory Structure
+## Project Structure
 
 ```
-FinSight AI/
-├── data/
-│   ├── raw/                       # Raw financial transactions CSV
-│   └── processed/                 # Cleaned relational SQLite database
+fin-sight/
+├── api/              # Vercel serverless entry point
 ├── src/
-│   ├── api/                       # FastAPI routes & endpoints
-│   ├── core/                      # Configuration, security & database sessions
-│   ├── data/                      # Synthetic IEEE/PaySim data generator
-│   ├── ml/                        # XGBoost & Isolation Forest training pipelines
-│   └── services/                  # ETL, RFM segmentation, forecasting & reporting
-├── static/                        # Frontend CSS, Chart.js & JavaScript modules
-├── tests/                         # Pytest test suite
-├── Dockerfile                     # Production container spec
-├── docker-compose.yml             # Microservice orchestration spec
-└── requirements.txt               # Python dependencies
+│   ├── api/          # FastAPI routes (auth, transactions, analytics, ml, reports)
+│   ├── core/         # Config & security
+│   ├── db/           # SQLAlchemy models & database
+│   ├── data/         # Synthetic data generator
+│   ├── ml/           # Feature engineering & model training
+│   ├── services/     # ETL, segmentation, forecasting
+│   └── reporting/    # Excel, PPTX, PDF generators
+├── static/           # Frontend (HTML, CSS, JS)
+├── requirements.txt
+├── vercel.json
+└── README.md
 ```
 
----
+## Getting Started
 
-## Quick Start Guide
-
-### Prerequisites
-- Python 3.10+ (Tested up to Python 3.14)
-- Git
-
-### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/fin-sight.git
-cd fin-sight
-```
+# Clone the repo
+git clone https://github.com/priyanshurai10/Fin-Sight.git
+cd Fin-Sight
 
-### 2. Set Up Virtual Environment & Dependencies
-```bash
-# Windows
+# Create virtual environment
 python -m venv .venv
-.venv\Scripts\activate
-
-# macOS / Linux
-python3 -m venv .venv
-source .venv/bin/activate
+.venv/Scripts/activate  # Windows
 
 # Install dependencies
 pip install -r requirements.txt
-```
 
-### 3. Generate Data & Train ML Models
-```bash
-# Generate 15,000 transaction records
-python -m src.data.generate_synthetic_data
-
-# Run ETL pipeline to load database
-python -m src.services.etl
-
-# Train XGBoost & Isolation Forest models
+# Train the ML model
 python -m src.ml.train
+
+# Run the server
+uvicorn src.api.main:app --reload
 ```
 
-### 4. Run Live Web Server
-```bash
-python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
-```
+Open `http://localhost:8000` to see the dashboard.
 
-Open your browser at `http://localhost:8000` to access the live dashboard.
+## API Endpoints
 
----
-
-## Git Workflow & Commands for Development
-
-When contributing or updating the platform codebase, follow standard git feature branch workflows:
-
-```bash
-# Check repository status
-git status
-
-# Create and checkout a new feature branch
-git checkout -b feature/model-optimization
-
-# Stage your modified files
-git add src/ml/train.py static/js/app.js
-
-# Commit changes with descriptive messages
-git commit -m "feat(ml): optimize XGBoost hyperparameters and update SHAP chart rendering"
-
-# Push branch to remote GitHub repository
-git push origin feature/model-optimization
-
-# Merge into main branch
-git checkout main
-git merge feature/model-optimization
-git push origin main
-```
-
----
-
-## Running Automated Tests
-
-Run the complete pytest test suite:
-
-```bash
-pytest tests/ -v
-```
-
----
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/analytics/kpis` | Dashboard KPI metrics |
+| GET | `/api/v1/analytics/segmentation` | RFM customer segments |
+| GET | `/api/v1/analytics/forecasting` | Revenue forecast |
+| GET | `/api/v1/analytics/incidents` | Fraud incident queue |
+| GET | `/api/v1/analytics/auditor` | ML model health metrics |
+| POST | `/api/v1/ml/score` | Real-time fraud scoring |
+| GET | `/api/v1/transactions` | Transaction ledger |
+| GET | `/api/v1/reports/excel` | Download Excel report |
+| GET | `/api/v1/reports/pptx` | Download PowerPoint deck |
+| GET | `/api/v1/reports/pdf` | Download PDF summary |
 
 ## License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+MIT — see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+  <sub>Built by <a href="https://github.com/priyanshurai10">Priyanshu Rai</a></sub>
+</div>

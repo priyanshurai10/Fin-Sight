@@ -74,7 +74,7 @@ def build_executive_pdf_report(output_filename: str = "FinSight_Executive_Summar
     pdf.cell(0, 10, "Risk Mitigation Guidelines", 0, 1)
     
     pdf.set_font("Helvetica", "", 10)
-    pdf.multi_cell(0, 6, "1. Enforce automated step-up 2FA for all online transactions originating from non-domestic IP ranges.\n2. Retrain XGBoost models on a daily schedule using Airflow DAGs.\n3. Integrate live WebSocket alerts into corporate security operations centers.")
+    pdf.multi_cell(0, 6, "1. Enforce automated step-up 2FA for all online transactions originating from non-domestic IP ranges.\n2. Retrain Random Forest models on a daily schedule using Airflow DAGs.\n3. Integrate live WebSocket alerts into corporate security operations centers.")
 
     pdf.output(output_path)
     print(f"Generated Executive PDF Report -> {output_path}")

@@ -216,7 +216,7 @@ def build_executive_pptx_report(output_filename: str = "FinSight_Executive_Prese
     
     recs = [
         ("1. Dynamic Step-Up Authentication", "Enforce 2FA/Biometric challenges on high-value transactions (> $1,000) or high-risk category purchases."),
-        ("2. Automated Real-Time Isolation", "Leverage XGBoost model inference (< 25ms) to auto-reject CRITICAL risk scores (> 75.0) before auth response."),
+        ("2. Automated Real-Time Isolation", "Leverage Random Forest model inference (< 25ms) to auto-reject CRITICAL risk scores (> 75.0) before auth response."),
         ("3. Continuous Model Retraining", "Schedule Airflow daily DAGs to retrain supervised models on newly confirmed fraud audit logs."),
         ("4. Executive BI Dashboard Sync", "Integrate live FastAPI streaming feeds directly into corporate Power BI & CloudWatch dashboards.")
     ]
