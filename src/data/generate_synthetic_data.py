@@ -3,6 +3,7 @@ import random
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
+from functools import lru_cache
 from src.core.config import settings
 
 # Authentic Financial Benchmarking Attributes (IEEE / PaySim / Kaggle Financial Standards)
@@ -41,6 +42,7 @@ CONTINENT_COUNTRY_MAP = {
 COUNTRY_CONTINENT_LOOKUP = {country: continent for continent, countries in CONTINENT_COUNTRY_MAP.items() for country in countries}
 HIGH_RISK_COUNTRIES = ["RU", "CN", "NG", "BR", "MX"]
 
+@lru_cache(maxsize=4)
 def generate_synthetic_transactions(num_records: int = 15000, seed: int = 42) -> pd.DataFrame:
     np.random.seed(seed)
     random.seed(seed)
@@ -136,9 +138,13 @@ def generate_synthetic_transactions(num_records: int = 15000, seed: int = 42) ->
     df = pd.DataFrame(data)
     df = df.sort_values(by="timestamp").reset_index(drop=True)
     
-    os.makedirs(os.path.dirname(settings.RAW_DATA_PATH), exist_ok=True)
-    df.to_csv(settings.RAW_DATA_PATH, index=False)
-    print(f"Generated {len(df)} authentic financial transaction records -> {settings.RAW_DATA_PATH}")
+    try:
+        os.makedirs(os.path.dirname(settings.RAW_DATA_PATH), exist_ok=True)
+        df.to_csv(settings.RAW_DATA_PATH, index=False)
+        print(f"Generated {len(df)} authentic financial transaction records -> {settings.RAW_DATA_PATH}")
+    except OSError:
+        pass # Vercel read-only file system
+        
     return df
 
 if __name__ == "__main__":

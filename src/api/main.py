@@ -44,7 +44,10 @@ app.include_router(reports.router, prefix=settings.API_V1_STR)
 
 # Serve Static Web UI Dashboard
 static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../static"))
-os.makedirs(static_dir, exist_ok=True)
+try:
+    os.makedirs(static_dir, exist_ok=True)
+except OSError:
+    pass
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 @app.get("/", include_in_schema=False)
