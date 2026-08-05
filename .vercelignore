@@ -1,0 +1,14 @@
+# Exclude non-serverless folders from Vercel Lambda bundle to stay under 500MB limit
+.venv/
+.git/
+.github/
+dags/
+docs/
+k8s/
+powerbi/
+tests/
+reports/output/
+docker/
+docker-compose.yml
+*.pyc
+__pycache__/
