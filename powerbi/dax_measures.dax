@@ -1,0 +1,42 @@
+// FinSight AI - DAX Measure Library for Power BI Enterprise Dashboard
+
+// 1. Total Transaction Volume
+Total Transaction Volume = SUM(Transactions[amount])
+
+// 2. Total Processed Count
+Total Transactions Count = COUNTROWS(Transactions)
+
+// 3. Fraud Transaction Count
+Fraud Incident Count = CALCULATE(COUNTROWS(Transactions), Transactions[is_fraud_actual] = TRUE())
+
+// 4. System Fraud Rate (%)
+System Fraud Rate % = DIVIDE([Fraud Incident Count], [Total Transactions Count], 0) * 100
+
+// 5. Total Fraud Dollar Exposure
+Fraud Monetary Exposure = CALCULATE(SUM(Transactions[amount]), Transactions[is_fraud_actual] = TRUE())
+
+// 6. Fraud Exposure % of Total Volume
+Fraud Volume % = DIVIDE([Fraud Monetary Exposure], [Total Transaction Volume], 0) * 100
+
+// 7. Average Order Value (AOV)
+Average Transaction Value = AVERAGE(Transactions[amount])
+
+// 8. High Risk Flagged Count (Risk Score >= 75.0)
+High Risk Flagged Count = CALCULATE(COUNTROWS(Transactions), Transactions[fraud_risk_score] >= 75.0)
+
+// 9. 30-Day Moving Average Revenue
+30D Moving Average Volume = 
+AVERAGEX(
+    DATESINPERIOD(Calendar[Date], LASTDATE(Calendar[Date]), -30, DAY),
+    [Total Transaction Volume]
+)
+
+// 10. Fraud Rate Rank by Merchant Category
+Category Fraud Rank = 
+RANKX(
+    ALL(Transactions[merchant_category]),
+    [System Fraud Rate %],
+    ,
+    DESC,
+    Dense
+)

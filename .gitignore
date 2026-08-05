@@ -1,0 +1,32 @@
+# Python Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Byte-compiled / Optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Database / SQLite local data
+data/processed/*.sqlite3
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.swp
