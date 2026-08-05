@@ -8,7 +8,6 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier, IsolationForest
 from sklearn.metrics import classification_report, roc_auc_score, confusion_matrix, precision_score, recall_score, f1_score
-from xgboost import XGBClassifier
 
 from src.core.config import settings
 from src.services.etl import ETLPipeline
@@ -35,23 +34,19 @@ def train_fraud_models():
         ]
     )
     
-    # 3. Supervised Model (XGBoost)
-    xgb_clf = XGBClassifier(
-        n_estimators=150,
-        max_depth=6,
-        learning_rate=0.08,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        random_state=42,
-        eval_metric='logloss'
+    # 3. Supervised Model (RandomForestClassifier - Optimized for Lightweight Production & Vercel)
+    rf_clf = RandomForestClassifier(
+        n_estimators=100,
+        max_depth=8,
+        random_state=42
     )
     
     supervised_pipeline = Pipeline([
         ('preprocessor', preprocessor),
-        ('classifier', xgb_clf)
+        ('classifier', rf_clf)
     ])
     
-    print("Training Supervised XGBoost Fraud Classifier...")
+    print("Training Supervised Fraud Classifier...")
     supervised_pipeline.fit(X_train, y_train)
     
     # Evaluation
