@@ -415,16 +415,68 @@
 
             <!-- TAB 9: POWERBI DASHBOARD -->
             <section id="tab-powerbi" class="tab-pane">
-                <div class="glass-panel" style="padding: 20px; height: calc(100vh - 160px); display: flex; flex-direction: column;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h2 class="card-title"><i class="fa-solid fa-chart-pie text-amber"></i> Embedded Power BI Workspace</h2>
-                        <a href="https://github.com/priyanshurai10/Fin-Sight/tree/main/powerbi" target="_blank" class="btn btn-primary-glow">
-                            <i class="fa-brands fa-github"></i> View Source Files
-                        </a>
+                <div class="glass-panel" style="padding: 0; height: calc(100vh - 120px); display: flex; flex-direction: column; background: #e5e5e5; border-radius: 8px; overflow: hidden;">
+                    <!-- Power BI Header -->
+                    <div style="background: #111827; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #F2C811;">
+                        <h2 style="color: white; margin: 0; font-size: 1.1rem; font-weight: 500;"><i class="fa-solid fa-chart-simple" style="color: #F2C811;"></i> Financial Intelligence - Power BI Report</h2>
                     </div>
-                    <div style="flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle);">
-                        <!-- Microsoft Public Sample Report Embed -->
-                        <iframe title="Power BI Retail Analysis Sample" width="100%" height="100%" src="https://app.powerbi.com/view?r=eyJrIjoiYjIzMjljNjUtNzg3NS00ZmU1LTg4ZmMtMTg3NmY1NWFlOTVlIiwidCI6ImNmM2YwZTMyLTRkZjEtNGFmYy1hMzg4LWI4M2E4MTlhNmMxZiIsImMiOjZ9" frameborder="0" allowFullScreen="true" style="background: white;"></iframe>
+                    
+                    <div style="display: flex; flex: 1; overflow: hidden;">
+                        <!-- Filters Pane (Left) -->
+                        <div style="width: 250px; background: #ffffff; border-right: 1px solid #ccc; padding: 15px; overflow-y: auto;">
+                            <h3 style="font-size: 0.9rem; color: #333; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 5px;">Filters</h3>
+                            <div style="margin-top: 15px;">
+                                <label style="display: block; font-size: 0.8rem; color: #666; margin-bottom: 5px;">Region</label>
+                                <select style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px; font-size: 0.85rem; background: #f9f9f9;">
+                                    <option>All Regions</option>
+                                </select>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <label style="display: block; font-size: 0.8rem; color: #666; margin-bottom: 5px;">Risk Level</label>
+                                <div style="font-size: 0.85rem; color: #333;">
+                                    <div style="margin-bottom: 5px;"><input type="checkbox" checked> CRITICAL</div>
+                                    <div style="margin-bottom: 5px;"><input type="checkbox" checked> HIGH</div>
+                                    <div style="margin-bottom: 5px;"><input type="checkbox" checked> MEDIUM</div>
+                                    <div style="margin-bottom: 5px;"><input type="checkbox" checked> LOW</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Main Report Area -->
+                        <div style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;">
+                            
+                            <!-- KPI Cards Row -->
+                            <div style="display: flex; gap: 15px; height: 100px;">
+                                <div style="flex: 1; background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Total Volume</div>
+                                    <div id="pbi-vol" style="font-size: 1.8rem; font-weight: bold; color: #333;">...</div>
+                                </div>
+                                <div style="flex: 1; background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Total Transactions</div>
+                                    <div id="pbi-tx" style="font-size: 1.8rem; font-weight: bold; color: #333;">...</div>
+                                </div>
+                                <div style="flex: 1; background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Fraud Rate</div>
+                                    <div id="pbi-fraud-rate" style="font-size: 1.8rem; font-weight: bold; color: #e11d48;">...</div>
+                                </div>
+                                <div style="flex: 1; background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-size: 0.8rem; color: #666; text-transform: uppercase;">Risk Exposure</div>
+                                    <div id="pbi-exposure" style="font-size: 1.8rem; font-weight: bold; color: #059669;">...</div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Row -->
+                            <div style="display: flex; gap: 15px; flex: 1;">
+                                <div style="flex: 2; background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px; position: relative;">
+                                    <h4 style="margin: 0 0 10px 0; font-size: 0.9rem; color: #333; text-align: center;">Transaction Volume by Category</h4>
+                                    <canvas id="pbi-bar-chart"></canvas>
+                                </div>
+                                <div style="flex: 1; background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px; position: relative;">
+                                    <h4 style="margin: 0 0 10px 0; font-size: 0.9rem; color: #333; text-align: center;">Fraud Distribution</h4>
+                                    <canvas id="pbi-doughnut-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

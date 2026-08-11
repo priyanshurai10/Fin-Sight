@@ -150,7 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (tabId === 'auditor') loadAuditorMetrics();
                 if (tabId === 'segmentation') loadSegmentation();
                 if (tabId === 'forecasting') loadForecast();
-            }, 80);
+                if (tabId === 'powerbi') loadPowerBIData();
+            }, 300);
         });
     });
 
@@ -713,3 +714,52 @@ document.addEventListener('DOMContentLoaded', () => {
     loadKPIs();
     loadTransactions();
 });
+
+
+// LOAD POWER BI CLONE DATA
+let pbiBarChart = null;
+let pbiPieChart = null;
+async function loadPowerBIData() {
+    try {
+        const res = await fetch('/api/v1/analytics/kpis');
+        const data = await res.json();
+        
+        document.getElementById('pbi-vol').innerText = formatCurrency(data.total_volume);
+        document.getElementById('pbi-tx').innerText = data.total_transactions.toLocaleString();
+        document.getElementById('pbi-fraud-rate').innerText = data.fraud_rate_pct.toFixed(2) + '%';
+        document.getElementById('pbi-exposure').innerText = formatCurrency(data.fraud_exposure);
+
+        // Bar Chart
+        const ctxBar = document.getElementById('pbi-bar-chart').getContext('2d');
+        if (pbiBarChart) pbiBarChart.destroy();
+        pbiBarChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(data.volume_by_category || {}).slice(0,6),
+                datasets: [{
+                    label: 'Volume',
+                    data: Object.values(data.volume_by_category || {}).slice(0,6),
+                    backgroundColor: '#0ea5e9'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // Doughnut Chart
+        const ctxPie = document.getElementById('pbi-doughnut-chart').getContext('2d');
+        if (pbiPieChart) pbiPieChart.destroy();
+        pbiPieChart = new Chart(ctxPie, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(data.fraud_by_channel || {}),
+                datasets: [{
+                    data: Object.values(data.fraud_by_channel || {}),
+                    backgroundColor: ['#e11d48', '#f59e0b', '#10b981', '#6366f1']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    } catch (err) {
+        console.error('Failed to load Power BI clone data', err);
+    }
+}
