@@ -31,6 +31,7 @@ The platform ingests raw transaction data, engineers behavioral features (veloci
 - **Customer RFM Segmentation** — K-Means clustering that segments customers into VIP, High-Risk, Standard, and Dormant profiles
 - **30-Day Financial Forecast** — Time-series revenue and fraud exposure projections with seasonality adjustments
 - **Automated Report Generation** — One-click Excel (.xlsx), PowerPoint (.pptx), and PDF executive reports
+- **Power BI Integration** — Embedded Microsoft Power BI workspace for deep dive interactive DAX analytics
 - **Interactive API Documentation** — Auto-generated Swagger/OpenAPI docs at `/docs`
 
 ## Tech Stack
@@ -41,7 +42,7 @@ The platform ingests raw transaction data, engineers behavioral features (veloci
 | ML Engine | Scikit-Learn (RandomForest, IsolationForest, K-Means) |
 | Database | SQLAlchemy + SQLite |
 | Frontend | Vanilla JS, Chart.js 4.4, CSS3 Glassmorphism |
-| Reports | OpenPyXL, python-pptx, FPDF2 |
+| Reports & BI | OpenPyXL, python-pptx, FPDF2, Microsoft Power BI |
 | Auth | JWT (python-jose), SHA-256 hashing |
 | Deployment | Vercel Serverless Functions |
 

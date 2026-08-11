@@ -119,7 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'auditor': ['ML Model Health Auditor', 'Model validation, classification accuracy & SHAP feature importance'],
         'segmentation': ['Customer RFM Segmentation', 'K-Means behavioral clustering by recency, frequency & monetary risk'],
         'forecasting': ['Financial Intelligence Forecast', 'Time-series revenue & fraud exposure projections'],
-        'reports': ['Executive Report Suite', 'One-click Excel, PowerPoint, and PDF report generation']
+        'reports': ['Executive Report Suite', 'One-click Excel, PowerPoint, and PDF report generation'],
+        'powerbi': ['Power BI Analytics', 'Deep dive interactive visualizations powered by Microsoft Power BI']
     };
 
     navLinks.forEach(link => {
